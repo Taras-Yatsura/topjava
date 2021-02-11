@@ -10,49 +10,57 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MealsUtil
 {
-    public static void main(String[] args)
+    public static final int DEFAULT_CALORIES_PER_DAY = 2000;
+
+    public static final List<Meal> meals =
+            Arrays.asList(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
+                          new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
+
+    public static List<MealTo> getFilteredTrObj(LocalTime startTime, LocalTime endTime)
     {
-        List<Meal> meals = Arrays.asList(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0),
-                                                  "Еда на граничное значение", 100),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
-                                         new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
-
-        List<MealTo> mealsTo = filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsTo.forEach(System.out::println);
-
-        //        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+        Map<LocalDate, Integer> caloriesSumByDate = getDayCalories();
+        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY,
+                                 meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
-    public static List<MealTo> filteredByCycles(List<Meal> meals, LocalTime startTime, LocalTime endTime,
-                                                int caloriesPerDay)
+    private static Map<LocalDate, Integer> getDayCalories()
     {
-        // TODO return filtered list with excess. Implement by cycles
-        return null;
+        return meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
     }
 
-    public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime,
-                                                 int caloriesPerDay)
+    public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay, Predicate<Meal> filter)
     {
-        Map<LocalDate, Integer> caloriesSumByDate =
-                meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
-                        //                      Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum)
-                                      );
+        Map<LocalDate, Integer> caloriesSumByDate = getDayCalories();
 
-        return meals.stream().filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
+        return meals.stream().filter(filter)
                     .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                     .collect(Collectors.toList());
     }
+
+    public static List<MealTo> getAllTrObj()
+    {
+        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY, meal -> true);
+    }
+
 
     private static MealTo createTo(Meal meal, boolean excess)
     {
         return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
+
+    public static List<MealTo> getTos()
+    {
+        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY, meal -> true);
+    }
+
 }
