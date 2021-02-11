@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
 public class MealsUtil
 {
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
@@ -28,19 +29,14 @@ public class MealsUtil
 
     public static List<MealTo> getFilteredTrObj(LocalTime startTime, LocalTime endTime)
     {
-        Map<LocalDate, Integer> caloriesSumByDate = getDayCalories();
         return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY,
-                                 meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
-    }
-
-    private static Map<LocalDate, Integer> getDayCalories()
-    {
-        return meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
+                                 meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay, Predicate<Meal> filter)
     {
-        Map<LocalDate, Integer> caloriesSumByDate = getDayCalories();
+        Map<LocalDate, Integer> caloriesSumByDate =
+                meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
 
         return meals.stream().filter(filter)
                     .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
