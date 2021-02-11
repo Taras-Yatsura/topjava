@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -27,13 +28,14 @@ public class MealsUtil
                           new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
                           new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
 
-    public static List<MealTo> getFilteredTrObj(LocalTime startTime, LocalTime endTime)
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int dayCalories, LocalTime startTime,
+                                              LocalTime endTime)
     {
-        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY,
+        return filterByPredicate(meals, dayCalories,
                                  meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
-    public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay, Predicate<Meal> filter)
+    public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter)
     {
         Map<LocalDate, Integer> caloriesSumByDate =
                 meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
@@ -43,20 +45,19 @@ public class MealsUtil
                     .collect(Collectors.toList());
     }
 
-    public static List<MealTo> getAllTrObj()
-    {
-        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY, meal -> true);
-    }
-
-
     private static MealTo createTo(Meal meal, boolean excess)
     {
-        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    public static List<MealTo> getTos()
+    public static List<MealTo> getAllTrObj()
     {
-        return filteredByStreams(meals, DEFAULT_CALORIES_PER_DAY, meal -> true);
+        return filterByPredicate(meals, DEFAULT_CALORIES_PER_DAY, meal -> true);
+    }
+
+    public static List<MealTo> getTos(Collection<Meal> meals, int dayCalories)
+    {
+        return filterByPredicate(meals, dayCalories, meal -> true);
     }
 
 }
