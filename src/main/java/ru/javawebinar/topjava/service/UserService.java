@@ -11,7 +11,12 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class UserService
 {
 
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository)
+    {
+        this.repository = repository;
+    }
 
     public User create(User user)
     {
