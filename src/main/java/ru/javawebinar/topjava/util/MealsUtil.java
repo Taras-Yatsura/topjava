@@ -28,15 +28,13 @@ public class MealsUtil
                           new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
                           new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
 
-    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int dayCalories, LocalTime startTime,
-                                              LocalTime endTime)
-    {
-        return filterByPredicate(meals, dayCalories,
-                                 meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime,
+                                              LocalTime endTime) {
+        return filterByPredicate(meals, caloriesPerDay,
+                                 meal -> Util.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
-    public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter)
-    {
+    public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate =
                 meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
 
