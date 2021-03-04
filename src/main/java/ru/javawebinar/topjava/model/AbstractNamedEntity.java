@@ -5,14 +5,15 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity
 
     protected String name;
 
-    protected AbstractNamedEntity(Integer id, String name)
-    {
+    public AbstractNamedEntity() {
+    }
+
+    protected AbstractNamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
