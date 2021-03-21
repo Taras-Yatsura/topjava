@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
@@ -16,26 +16,26 @@
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt>From Date (inclusive):</dt>
-            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+            <dd><label><input type="date" name="startDate" value="${param.startDate}"></label></dd>
         </dl>
         <dl>
             <dt>To Date (inclusive):</dt>
-            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+            <dd><label><input type="date" name="endDate" value="${param.endDate}"></label></dd>
         </dl>
         <dl>
             <dt>From Time (inclusive):</dt>
-            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+            <dd><label><input type="time" name="startTime" value="${param.startTime}"></label></dd>
         </dl>
         <dl>
             <dt>To Time (exclusive):</dt>
-            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+            <dd><label><input type="time" name="endTime" value="${param.endTime}"></label></dd>
         </dl>
         <button type="submit">Filter</button>
     </form>
     <hr/>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table style="border: 1px; padding: 8px; border-spacing: 0">
         <thead>
         <tr>
             <th>Date</th>

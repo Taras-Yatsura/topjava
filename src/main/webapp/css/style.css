@@ -22,3 +22,11 @@ tr[data-mealExcess="false"] {
 tr[data-mealExcess="true"] {
     color: red;
 }
+
+td {
+    padding: 8px;
+}
+
+th {
+    padding: 8px;
+}
