@@ -1,18 +1,15 @@
 package ru.javawebinar.topjava.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
@@ -22,7 +19,7 @@ import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
                                                                                              "LEFT JOIN FETCH u.roles" +
                                                                                              " WHERE u.email=?1"),
                @NamedQuery(name = User.ALL_SORTED,
-                           query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),})
+                           query = "SELECT u FROM User u ORDER BY u.name, u.email"),})
 @Entity
 @Table(name = "users",
        uniqueConstraints = {@UniqueConstraint(columnNames = "email",
@@ -66,6 +63,8 @@ public class User extends AbstractNamedEntity
                                                             name = "user_roles_unique_idx")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
+    //    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 200)
     private Set<Role> roles;
 
     @Column(name = "calories_per_day",
@@ -75,6 +74,11 @@ public class User extends AbstractNamedEntity
            max = 10000)
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
+    @OneToMany(fetch = FetchType.LAZY,
+               mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    private List<Meal> meals;
+
     public User() {
     }
 
@@ -83,7 +87,8 @@ public class User extends AbstractNamedEntity
              u.getRegistered(), u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Date registered, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled,
+                Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -143,6 +148,10 @@ public class User extends AbstractNamedEntity
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, new Date(), EnumSet.of(role, roles));
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
     }
 
     @Override
