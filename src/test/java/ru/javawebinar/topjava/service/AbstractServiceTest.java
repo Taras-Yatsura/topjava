@@ -13,6 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.TimingRules;
 
+import static org.junit.Assert.assertThrows;
+import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
+
 @ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql",
@@ -25,4 +28,16 @@ abstract public class AbstractServiceTest
 
     @Rule
     public Stopwatch stopwatch = TimingRules.STOPWATCH;
+
+    //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
+    public <T extends Throwable> void validateRootCause(Class<T> rootExceptionClass, Runnable runnable) {
+        assertThrows(rootExceptionClass, () -> {
+            try {
+                runnable.run();
+            }
+            catch (Exception e) {
+                throw getRootCause(e);
+            }
+        });
+    }
 }
