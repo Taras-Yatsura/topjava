@@ -23,10 +23,24 @@ tr[data-mealExcess="true"] {
     color: red;
 }
 
+header, footer {
+    background: none repeat scroll 0 0 #a6c9e2;
+    color: #2e6e9e;
+    font-size: 20px;
+    padding: 5px 20px;
+    margin: 6px 0;
+}
+
 td {
     padding: 8px;
 }
 
 th {
     padding: 8px;
+}
+
+table {
+    border: 1px;
+    padding: 8px;
+    border-spacing: 0;
 }

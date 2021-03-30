@@ -9,7 +9,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="index.jsp">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
     <form method="get" action="meals">
@@ -35,7 +35,7 @@
     <hr/>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
-    <table style="border: 1px; padding: 8px; border-spacing: 0">
+    <table>
         <thead>
         <tr>
             <th>Date</th>
@@ -45,6 +45,7 @@
             <th></th>
         </tr>
         </thead>
+        <%--@elvariable id="meals" type="java.util.List"--%>
         <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr data-mealExcess="${meal.excess}">
