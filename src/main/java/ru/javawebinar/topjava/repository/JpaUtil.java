@@ -18,6 +18,8 @@ public class JpaUtil
         //        sf.evict(User.class);
         //        sf.getCache().evictEntity(User.class, BaseEntity.START_SEQ);
         //        sf.getCache().evictEntityRegion(User.class);
+        //        sf.getCache().evictEntityData(User.class, AbstractBaseEntity.START_SEQ);
+        //        sf.getCache().evictEntityData(User.class);
         sf.getCache().evictAllRegions();
     }
 }
