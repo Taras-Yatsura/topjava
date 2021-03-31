@@ -1,9 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="messages.app"/>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
 hr      - horizontal line
 footer  - bootom of page (copirights, etc)
 --%>
 <hr>
-<footer><fmt:message key="app.footer"/></footer>
+<footer><spring:message code="app.footer"/></footer>
