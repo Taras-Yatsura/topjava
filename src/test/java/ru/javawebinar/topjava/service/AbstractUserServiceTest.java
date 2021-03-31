@@ -1,10 +1,12 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
@@ -38,6 +40,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest
     private CacheManager cacheManager;
 
     @Autowired
+    @Lazy
     protected JpaUtil jpaUtil;
 
     @Before
@@ -47,7 +50,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest
         if ((userCache = cacheManager.getCache("users")) != null) {
             userCache.clear();
         }
-        jpaUtil.clear2ndLevelHibernateCache();
+        if (isJpaBased()) {
+            jpaUtil.clear2ndLevelHibernateCache();
+        }
     }
 
     @Test
@@ -109,6 +114,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest
 
     @Test
     public void createWithException() throws Exception {
+        Assume.assumeTrue("Validation not supported (JPA only)", isJpaBased());
         validateRootCause(ConstraintViolationException.class,
                           () -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class,
