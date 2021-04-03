@@ -43,16 +43,19 @@ public abstract class AbstractUserController
         service.delete(id);
     }
 
-    public void update(User user, int id)
-    {
+    public void update(User user, int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         service.update(user);
     }
 
-    public User getByMail(String email)
-    {
+    public User getByMail(String email) {
         log.info("getByEmail {}", email);
         return service.getByEmail(email);
+    }
+
+    public User getWithMeals(int id) {
+        log.info("getWithMeals {}", id);
+        return service.getWithMeals(id);
     }
 }
