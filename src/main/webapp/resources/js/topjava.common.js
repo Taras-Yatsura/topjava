@@ -43,7 +43,8 @@ function save() {
     const form = $("#detailsForm");
     $.ajax({
         type: "POST",
-        url: ctx.ajaxUrl,
+        url: "http://localhost:8080/topjava/profile/meals",
+        contentType: "application/json;charset=UTF-8",
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
