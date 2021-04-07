@@ -31,9 +31,6 @@
         </dl>
         <button type="submit"><spring:message code="meal.filter"/></button>
     </form>
-    <%--    <hr>
-            <a href="meals/create"><spring:message code="meal.add"/></a>
-        <hr>--%>
     <button class="btn btn-primary" onclick="add()">
         <span class="fa fa-plus"></span>
         <spring:message code="common.add"/>
@@ -52,15 +49,15 @@
                 </tr>
                 </thead>
                 <c:forEach items="${meals}" var="meal">
-                    <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
-                    <tr id="${meal.id}">
+                    <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
+                    <tr data-mealExcess="$(meal.excess)">
                         <td>
                                 ${fn:formatDateTime(meal.dateTime)}
                         </td>
                         <td>${meal.description}</td>
                         <td>${meal.calories}</td>
                         <td><a><span class="fa fa-pencil"></span></a></td>
-                        <td><a class="delete"><span class="fa fa-remove"></span></a></td>
+                        <td><a onclick="deleteRow(${meal.id})"><span class="fa fa-remove"></span></a></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -70,10 +67,13 @@
     <div class="modal fade" tabindex="-1" id="editRow">
         <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <h4 class="modal-title"><spring:message code="meal.add"/></h4>
                     <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;</button>
                 </div>
+
+
                 <div class="modal-body">
                     <form id="detailsForm">
                         <input type="hidden" id="id" name="id">
@@ -98,6 +98,8 @@
                         </div>
                     </form>
                 </div>
+
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeNoty()">
                         <span class="fa fa-close"></span>
