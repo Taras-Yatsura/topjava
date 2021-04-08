@@ -39,3 +39,20 @@ $(function () {
         })
     );
 });
+
+
+function applyFilter() {
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl + "filtered",
+        data: $("#filter").serializeArray()
+    }).done(function (newData) {
+        //updateTable();
+
+        ctx.datatableApi.clear();
+        ctx.datatableApi.rows.add(newData);
+        ctx.datatableApi.draw();
+
+        successNoty("Filter applied");
+    });
+}

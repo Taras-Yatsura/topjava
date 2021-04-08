@@ -31,8 +31,13 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ctx.ajaxUrl, function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
+    $.ajax({
+        url: ctx.ajaxUrl,
+        type: "GET"
+    }).done(function (newData) {
+        ctx.datatableApi.clear();
+        ctx.datatableApi.rows.add(newData);
+        ctx.datatableApi.draw();
     });
 }
 
