@@ -4,7 +4,7 @@
 <nav class="navbar navbar-dark bg-dark py-0">
     <div class="container">
         <a href="meals" class="navbar-brand"><img id="meal_icon" src="resources/images/icon-meal.png"
-                                                  alt="img-food-icon">
+                                                  alt="food">
             <spring:message code="app.title"/>
         </a>
         <form class="form-inline my-2">
