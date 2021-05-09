@@ -16,7 +16,6 @@ class RootControllerTest extends AbstractControllerTest
     void getUsers() throws Exception {
         perform(get("/users").with(userAuth(admin))).andDo(print()).andExpect(status().isOk())
                                                     .andExpect(view().name("users"))
-                                                    .andExpect(forwardedUrl("/WEB-INF/jsp/users.jsp"))
                                                     .andExpect(forwardedUrl("/WEB-INF/jsp/users.jsp"));
     }
 
