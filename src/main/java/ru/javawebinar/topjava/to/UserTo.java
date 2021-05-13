@@ -27,8 +27,7 @@ public class UserTo extends BaseTo implements Serializable
 
     @NotBlank
     @Size(min = 5,
-          max = 32,
-          message = "length must be between 5 and 32 characters")
+          max = 32)
     private String password;
 
     @Range(min = 10,
