@@ -107,10 +107,8 @@ class ProfileRestControllerTest extends AbstractControllerTest
         UserTo updatedTo = new UserTo(null, "newName", "admin@gmail.com", "newPassword", 1500);
 
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON).with(userHttpBasic(user))
-                                      .content(JsonUtil.writeValue(updatedTo))).andDo(print())
-                                                                               .andExpect(status().isConflict())
-                                                                               .andExpect(errorType(VALIDATION_ERROR))
-                                                                               .andExpect(detailMessage(
-                                                                                       EXCEPTION_DUPLICATE_EMAIL));
+                                      .content(JsonUtil.writeValue(updatedTo))).andDo(print()).andExpect(
+                status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR)).andExpect(
+                detailMessage(EXCEPTION_DUPLICATE_EMAIL));
     }
 }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
+import ru.javawebinar.topjava.HasIdAndEmail;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -34,7 +35,7 @@ import static ru.javawebinar.topjava.util.UserUtil.DEFAULT_CALORIES_PER_DAY;
 @Table(name = "users",
        uniqueConstraints = {@UniqueConstraint(columnNames = "email",
                                               name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity
+public class User extends AbstractNamedEntity implements HasIdAndEmail
 {
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
@@ -119,6 +120,7 @@ public class User extends AbstractNamedEntity
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
+    @Override
     public String getEmail() {
         return email;
     }

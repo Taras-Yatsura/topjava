@@ -158,7 +158,7 @@ class AdminRestControllerTest extends AbstractControllerTest
         updated.setEmail("admin@gmail.com");
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID).contentType(MediaType.APPLICATION_JSON)
                                       .with(userHttpBasic(admin)).content(jsonWithPassword(updated, "password")))
-                .andDo(print()).andExpect(status().isConflict()).andExpect(errorType(VALIDATION_ERROR))
+                .andDo(print()).andExpect(status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR))
                 .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
     }
 
@@ -167,11 +167,8 @@ class AdminRestControllerTest extends AbstractControllerTest
     void createDuplicate() throws Exception {
         User expected = new User(null, "New", "user@yandex.ru", "newPass", 2300, Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON).with(userHttpBasic(admin))
-                                      .content(jsonWithPassword(expected, "newPass"))).andDo(print())
-                                                                                      .andExpect(status().isConflict())
-                                                                                      .andExpect(errorType(
-                                                                                              VALIDATION_ERROR))
-                                                                                      .andExpect(detailMessage(
-                                                                                              EXCEPTION_DUPLICATE_EMAIL));
+                                      .content(jsonWithPassword(expected, "newPass"))).andDo(print()).andExpect(
+                status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR)).andExpect(
+                detailMessage(EXCEPTION_DUPLICATE_EMAIL));
     }
 }
