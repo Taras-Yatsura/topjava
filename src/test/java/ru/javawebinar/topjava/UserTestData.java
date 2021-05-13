@@ -51,8 +51,7 @@ public class UserTestData
     public static User getUpdated() {
         User updated = new User(user);
 
-        //      TODO comment for fail AdminRestControllerTest.update
-        updated.setEmail("update@gmail.com");
+        /*updated.setEmail("update@gmail.com");*/
 
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
