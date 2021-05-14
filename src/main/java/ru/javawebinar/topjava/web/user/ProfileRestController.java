@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -21,13 +22,13 @@ public class ProfileRestController extends AbstractUserController {
     static final String REST_URL = "/rest/profile";
 
     @GetMapping
-    public User get(@AuthenticationPrincipal AuthorizedUser authUser) {
+    public User get(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
         return super.get(authUser.getId());
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal AuthorizedUser authUser) {
+    public void delete(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
         super.delete(authUser.getId());
     }
 
@@ -42,7 +43,7 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo, @AuthenticationPrincipal AuthorizedUser authUser)
+    public void update(@RequestBody UserTo userTo, @ApiIgnore @AuthenticationPrincipal AuthorizedUser authUser)
             throws BindException {
         validateBeforeUpdate(userTo, authUser.getId());
         super.update(userTo, authUser.getId());
@@ -54,7 +55,7 @@ public class ProfileRestController extends AbstractUserController {
     }
 
     @GetMapping("/with-meals")
-    public User getWithMeals(@AuthenticationPrincipal AuthorizedUser authUser) {
+    public User getWithMeals(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
         return super.getWithMeals(authUser.getId());
     }
 }

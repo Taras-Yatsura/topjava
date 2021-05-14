@@ -6,12 +6,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+@ApiIgnore
 @RestController
 @RequestMapping(value = "/profile/meals",
                 produces = MediaType.APPLICATION_JSON_VALUE)
