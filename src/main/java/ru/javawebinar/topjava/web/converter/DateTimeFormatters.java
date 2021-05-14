@@ -10,10 +10,8 @@ import java.util.Locale;
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
-public class DateTimeFormatters
-{
-    public static class LocalDateFormatter implements Formatter<LocalDate>
-    {
+public class DateTimeFormatters {
+    public static class LocalDateFormatter implements Formatter<LocalDate> {
 
         @Override
         public LocalDate parse(String text, Locale locale) {
@@ -26,8 +24,7 @@ public class DateTimeFormatters
         }
     }
 
-    public static class LocalTimeFormatter implements Formatter<LocalTime>
-    {
+    public static class LocalTimeFormatter implements Formatter<LocalTime> {
 
         @Override
         public LocalTime parse(String text, Locale locale) {

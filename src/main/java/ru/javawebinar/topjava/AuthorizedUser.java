@@ -6,8 +6,7 @@ import ru.javawebinar.topjava.util.UserUtil;
 
 import java.io.Serial;
 
-public class AuthorizedUser extends org.springframework.security.core.userdetails.User
-{
+public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -18,13 +17,13 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         setTo(UserUtil.asTo(user));
     }
 
-    public int getId() {
-        return userTo.id();
-    }
-
     public void setTo(UserTo newTo) {
         newTo.setPassword(null);
         userTo = newTo;
+    }
+
+    public int getId() {
+        return userTo.id();
     }
 
     public UserTo getUserTo() {

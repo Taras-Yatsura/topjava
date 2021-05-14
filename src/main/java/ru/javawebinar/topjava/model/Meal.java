@@ -33,8 +33,7 @@ import java.time.LocalTime;
 @Table(name = "meals",
        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"},
                                               name = "meals_unique_user_datetime_idx")})
-public class Meal extends AbstractBaseEntity
-{
+public class Meal extends AbstractBaseEntity {
     public static final String ALL_SORTED = "Meal.getAll";
     public static final String DELETE = "Meal.delete";
     public static final String GET_BETWEEN = "Meal.getBetween";
@@ -81,12 +80,24 @@ public class Meal extends AbstractBaseEntity
         return dateTime;
     }
 
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public int getCalories() {
         return calories;
+    }
+
+    public void setCalories(Integer calories) {
+        this.calories = calories;
     }
 
     public LocalDate getDate() {
@@ -99,18 +110,6 @@ public class Meal extends AbstractBaseEntity
 
     public boolean isNew() {
         return id == null;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCalories(Integer calories) {
-        this.calories = calories;
     }
 
     public User getUser() {

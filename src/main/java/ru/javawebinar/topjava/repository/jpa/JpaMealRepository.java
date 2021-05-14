@@ -13,8 +13,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class JpaMealRepository implements MealRepository
-{
+public class JpaMealRepository implements MealRepository {
     @PersistenceContext
     private EntityManager em;
 
@@ -53,7 +52,11 @@ public class JpaMealRepository implements MealRepository
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return em.createNamedQuery(Meal.GET_BETWEEN, Meal.class).setParameter("userId", userId)
-                 .setParameter("startDateTime", startDateTime).setParameter("endDateTime", endDateTime).getResultList();
+        return em
+                .createNamedQuery(Meal.GET_BETWEEN, Meal.class)
+                .setParameter("userId", userId)
+                .setParameter("startDateTime", startDateTime)
+                .setParameter("endDateTime", endDateTime)
+                .getResultList();
     }
 }

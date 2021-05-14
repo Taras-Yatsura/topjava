@@ -24,8 +24,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserService implements UserDetailsService
-{
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -42,18 +41,14 @@ public class UserService implements UserDetailsService
         return prepareAndSave(user);
     }
 
+    private User prepareAndSave(User user) {
+        return repository.save(prepareToSave(user, passwordEncoder));
+    }
+
     @CacheEvict(value = "users",
                 allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
-    }
-
-    public User get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
-    }
-
-    private User prepareAndSave(User user) {
-        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Cacheable("users")
@@ -81,6 +76,10 @@ public class UserService implements UserDetailsService
         User user = get(id);
         user.setEnabled(enabled);
         repository.save(user);  // !! need only for JDBC implementation
+    }
+
+    public User get(int id) {
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     @Override

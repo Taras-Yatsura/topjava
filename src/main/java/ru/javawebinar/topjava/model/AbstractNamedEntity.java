@@ -1,14 +1,12 @@
 package ru.javawebinar.topjava.model;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-
 @MappedSuperclass
-public abstract class AbstractNamedEntity extends AbstractBaseEntity
-{
+public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
     @NotBlank
     @Size(min = 2,

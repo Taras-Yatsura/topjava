@@ -4,8 +4,7 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MealTo extends BaseTo
-{
+public class MealTo extends BaseTo {
     private final LocalDateTime dateTime;
     private final String description;
     private final int calories;
@@ -20,13 +19,11 @@ public class MealTo extends BaseTo
         this.excess = excess;
     }
 
-    public LocalDateTime getDateTime()
-    {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 

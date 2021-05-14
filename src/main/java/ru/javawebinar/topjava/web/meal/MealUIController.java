@@ -15,8 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/profile/meals",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-public class MealUIController extends AbstractMealController
-{
+public class MealUIController extends AbstractMealController {
+
+    @Override
+    @GetMapping("/{id}")
+    public Meal get(@PathVariable int id) {
+        return super.get(id);
+    }
 
     @Override
     @DeleteMapping("/{id}")
@@ -29,12 +34,6 @@ public class MealUIController extends AbstractMealController
     @GetMapping
     public List<MealTo> getAll() {
         return super.getAll();
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    public Meal get(@PathVariable int id) {
-        return super.get(id);
     }
 
     @Override

@@ -24,19 +24,17 @@ import static ru.javawebinar.topjava.util.UserUtil.DEFAULT_CALORIES_PER_DAY;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({@NamedQuery(name = User.DELETE,
-                           query = "DELETE FROM User u WHERE u.id=:id"), @NamedQuery(name = User.BY_EMAIL,
-                                                                                     query = "SELECT DISTINCT u FROM " +
-                                                                                             "User u LEFT JOIN FETCH " +
-                                                                                             "u.roles" +
-                                                                                             " WHERE u.email=?1"),
+                           query = "DELETE FROM User u WHERE u.id=:id"),
+               @NamedQuery(name = User.BY_EMAIL,
+                           query = "SELECT DISTINCT u FROM " + "User u LEFT JOIN FETCH " + "u.roles" +
+                                   " WHERE u.email=?1"),
                @NamedQuery(name = User.ALL_SORTED,
                            query = "SELECT u FROM User u ORDER BY u.name, u.email"),})
 @Entity
 @Table(name = "users",
        uniqueConstraints = {@UniqueConstraint(columnNames = "email",
                                               name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity implements HasIdAndEmail
-{
+public class User extends AbstractNamedEntity implements HasIdAndEmail {
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
@@ -101,12 +99,24 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail
     }
 
     public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getCaloriesPerDay(), u.isEnabled(),
-             u.getRegistered(), u.getRoles());
+        this(u.getId(),
+             u.getName(),
+             u.getEmail(),
+             u.getPassword(),
+             u.getCaloriesPerDay(),
+             u.isEnabled(),
+             u.getRegistered(),
+             u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled,
-                Date registered, Collection<Role> roles) {
+    public User(Integer id,
+                String name,
+                String email,
+                String password,
+                int caloriesPerDay,
+                boolean enabled,
+                Date registered,
+                Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -114,10 +124,6 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail
         this.enabled = enabled;
         this.registered = registered;
         setRoles(roles);
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     @Override
@@ -129,12 +135,8 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail
         this.email = email;
     }
 
-    public Date getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(Date registered) {
-        this.registered = registered;
+    public String getPassword() {
+        return password;
     }
 
     public int getCaloriesPerDay() {
@@ -149,16 +151,24 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
     }
 
     public Set<Role> getRoles() {
         return roles;
     }
 
-    public String getPassword() {
-        return password;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setPassword(String password) {

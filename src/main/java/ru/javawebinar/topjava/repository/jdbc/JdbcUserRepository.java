@@ -19,8 +19,7 @@ import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)
-public class JdbcUserRepository implements UserRepository
-{
+public class JdbcUserRepository implements UserRepository {
 
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
@@ -97,8 +96,9 @@ public class JdbcUserRepository implements UserRepository
 
         Map<Integer, Set<Role>> map = new HashMap<>();
         jdbcTemplate.query("SELECT * FROM user_roles", rs -> {
-            map.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
-               .add(Role.valueOf(rs.getString("role")));
+            map
+                    .computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
+                    .add(Role.valueOf(rs.getString("role")));
         });
         users.forEach(u -> u.setRoles(map.get(u.getId())));
         return users;
@@ -120,7 +120,9 @@ public class JdbcUserRepository implements UserRepository
     private void insertRoles(User u) {
         Set<Role> roles = u.getRoles();
         if (!CollectionUtils.isEmpty(roles)) {
-            jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)", roles, roles.size(),
+            jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)",
+                                     roles,
+                                     roles.size(),
                                      (ps, role) -> {
                                          ps.setInt(1, u.id());
                                          ps.setString(2, role.name());

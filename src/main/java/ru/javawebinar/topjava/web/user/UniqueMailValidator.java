@@ -11,8 +11,7 @@ import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 
 @Component
-public class UniqueMailValidator implements org.springframework.validation.Validator
-{
+public class UniqueMailValidator implements org.springframework.validation.Validator {
 
     private final UserRepository repository;
 

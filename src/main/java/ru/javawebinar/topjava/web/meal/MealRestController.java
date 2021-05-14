@@ -18,8 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = MealRestController.REST_URL,
                 produces = MediaType.APPLICATION_JSON_VALUE)
-public class MealRestController extends AbstractMealController
-{
+public class MealRestController extends AbstractMealController {
     static final String REST_URL = "/rest/profile/meals";
 
     @Override
@@ -49,21 +48,24 @@ public class MealRestController extends AbstractMealController
         super.update(meal, id);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> createWithLocation(@Valid @RequestBody Meal meal) {
-        Meal created = super.create(meal);
-
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL + "/{id}")
-                                                          .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
-    }
-
     @GetMapping("/filter")
     public List<MealTo> getBetween(@RequestParam @Nullable LocalDate startDate,
                                    @RequestParam @Nullable LocalTime startTime,
                                    @RequestParam @Nullable LocalDate endDate,
                                    @RequestParam @Nullable LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Meal> createWithLocation(@Valid @RequestBody Meal meal) {
+        Meal created = super.create(meal);
+
+        URI uriOfNewResource = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 }

@@ -10,8 +10,7 @@ import java.util.Map;
 
 import static ru.javawebinar.topjava.web.json.JacksonObjectMapper.getMapper;
 
-public class JsonUtil
-{
+public class JsonUtil {
 
     public static <T> List<T> readValues(String json, Class<T> clazz) {
         ObjectReader reader = getMapper().readerFor(clazz);
@@ -32,15 +31,6 @@ public class JsonUtil
         }
     }
 
-    public static <T> String writeValue(T obj) {
-        try {
-            return getMapper().writeValueAsString(obj);
-        }
-        catch (JsonProcessingException e) {
-            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
-        }
-    }
-
     public static <T> String writeAdditionProps(T obj, String addName, Object addValue) {
         return writeAdditionProps(obj, Map.of(addName, addValue));
     }
@@ -49,5 +39,14 @@ public class JsonUtil
         Map<String, Object> map = getMapper().convertValue(obj, new TypeReference<>() {});
         map.putAll(addProps);
         return writeValue(map);
+    }
+
+    public static <T> String writeValue(T obj) {
+        try {
+            return getMapper().writeValueAsString(obj);
+        }
+        catch (JsonProcessingException e) {
+            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
+        }
     }
 }

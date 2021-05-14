@@ -24,8 +24,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 import static ru.javawebinar.topjava.util.exception.ErrorType.VALIDATION_ERROR;
 import static ru.javawebinar.topjava.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
-class AdminRestControllerTest extends AbstractControllerTest
-{
+class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
 
@@ -34,43 +33,43 @@ class AdminRestControllerTest extends AbstractControllerTest
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID).with(userHttpBasic(admin))).andExpect(status().isOk())
-                                                                                           .andDo(print())
-                                                                                           // https://jira.spring
-                                                                                           // .io/browse/SPR-14472
-                                                                                           .andExpect(content()
-                                                                                                              .contentTypeCompatibleWith(
-                                                                                                                      MediaType.APPLICATION_JSON))
-                                                                                           .andExpect(USER_MATCHER
-                                                                                                              .contentJson(
-                                                                                                                      admin));
+        perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID).with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                // https://jira.spring
+                // .io/browse/SPR-14472
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_MATCHER.contentJson(admin));
     }
 
     @Test
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND).with(userHttpBasic(admin))).andDo(print()).andExpect(
-                status().isUnprocessableEntity());
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND).with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void getByEmail() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "by?email=" + admin.getEmail()).with(userHttpBasic(admin)))
-                .andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(admin));
     }
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + USER_ID).with(userHttpBasic(admin))).andDo(print()).andExpect(
-                status().isNoContent());
+        perform(MockMvcRequestBuilders.delete(REST_URL + USER_ID).with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> userService.get(USER_ID));
     }
 
     @Test
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND).with(userHttpBasic(admin))).andDo(print())
-                                                                                               .andExpect(
-                                                                                                       status().isUnprocessableEntity());
+        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND).with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -87,9 +86,13 @@ class AdminRestControllerTest extends AbstractControllerTest
     void update() throws Exception {
         User updated = getUpdated();
         updated.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID).contentType(MediaType.APPLICATION_JSON)
-                                      .with(userHttpBasic(admin)).content(jsonWithPassword(updated, "newPass")))
-                .andDo(print()).andExpect(status().isNoContent());
+        perform(MockMvcRequestBuilders
+                        .put(REST_URL + USER_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(jsonWithPassword(updated, "newPass")))
+                .andDo(print())
+                .andExpect(status().isNoContent());
 
         USER_MATCHER.assertMatch(userService.get(USER_ID), getUpdated());
     }
@@ -97,10 +100,12 @@ class AdminRestControllerTest extends AbstractControllerTest
     @Test
     void createWithLocation() throws Exception {
         User newUser = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                                                             .with(userHttpBasic(admin))
-                                                             .content(jsonWithPassword(newUser, "newPass")))
-                .andExpect(status().isCreated());
+        ResultActions action = perform(MockMvcRequestBuilders
+                                               .post(REST_URL)
+                                               .contentType(MediaType.APPLICATION_JSON)
+                                               .with(userHttpBasic(admin))
+                                               .content(jsonWithPassword(newUser,
+                                                                         "newPass"))).andExpect(status().isCreated());
 
         User created = readFromJson(action, User.class);
         int newId = created.id();
@@ -111,25 +116,29 @@ class AdminRestControllerTest extends AbstractControllerTest
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL).with(userHttpBasic(admin))).andExpect(status().isOk()).andExpect(
-                content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andExpect(
-                USER_MATCHER.contentJson(admin, user));
+        perform(MockMvcRequestBuilders.get(REST_URL).with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_MATCHER.contentJson(admin, user));
     }
 
     @Test
     void getWithMeals() throws Exception {
         assumeDataJpa();
         perform(MockMvcRequestBuilders.get(REST_URL + ADMIN_ID + "/with-meals").with(userHttpBasic(admin)))
-                .andExpect(status().isOk()).andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_WITH_MEALS_MATCHER.contentJson(admin));
     }
 
     @Test
     void enable() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + USER_ID).param("enabled", "false")
-                                      .contentType(MediaType.APPLICATION_JSON).with(userHttpBasic(admin)))
-                .andDo(print()).andExpect(status().isNoContent());
+        perform(MockMvcRequestBuilders
+                        .patch(REST_URL + USER_ID)
+                        .param("enabled", "false")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))).andDo(print()).andExpect(status().isNoContent());
 
         assertFalse(userService.get(USER_ID).isEnabled());
     }
@@ -137,18 +146,28 @@ class AdminRestControllerTest extends AbstractControllerTest
     @Test
     void createInvalid() throws Exception {
         User invalid = new User(null, null, "", "newPass", 7300, Role.USER, Role.ADMIN);
-        perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON).with(userHttpBasic(admin))
-                                      .content(jsonWithPassword(invalid, "newPass"))).andDo(print()).andExpect(
-                status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR));
+        perform(MockMvcRequestBuilders
+                        .post(REST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(jsonWithPassword(invalid, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 
     @Test
     void updateInvalid() throws Exception {
         User invalid = new User(user);
         invalid.setName("");
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID).contentType(MediaType.APPLICATION_JSON)
-                                      .with(userHttpBasic(admin)).content(jsonWithPassword(invalid, "password")))
-                .andDo(print()).andExpect(status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR));
+        perform(MockMvcRequestBuilders
+                        .put(REST_URL + USER_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(jsonWithPassword(invalid, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 
     @Test
@@ -156,9 +175,14 @@ class AdminRestControllerTest extends AbstractControllerTest
     void updateDuplicate() throws Exception {
         User updated = new User(user);
         updated.setEmail("admin@gmail.com");
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID).contentType(MediaType.APPLICATION_JSON)
-                                      .with(userHttpBasic(admin)).content(jsonWithPassword(updated, "password")))
-                .andDo(print()).andExpect(status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR))
+        perform(MockMvcRequestBuilders
+                        .put(REST_URL + USER_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(jsonWithPassword(updated, "password")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
     }
 
@@ -166,9 +190,14 @@ class AdminRestControllerTest extends AbstractControllerTest
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
         User expected = new User(null, "New", "user@yandex.ru", "newPass", 2300, Role.USER, Role.ADMIN);
-        perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON).with(userHttpBasic(admin))
-                                      .content(jsonWithPassword(expected, "newPass"))).andDo(print()).andExpect(
-                status().isUnprocessableEntity()).andExpect(errorType(VALIDATION_ERROR)).andExpect(
-                detailMessage(EXCEPTION_DUPLICATE_EMAIL));
+        perform(MockMvcRequestBuilders
+                        .post(REST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(userHttpBasic(admin))
+                        .content(jsonWithPassword(expected, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_DUPLICATE_EMAIL));
     }
 }

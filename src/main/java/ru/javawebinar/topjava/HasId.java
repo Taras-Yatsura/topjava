@@ -2,8 +2,7 @@ package ru.javawebinar.topjava;
 
 import org.springframework.util.Assert;
 
-public interface HasId
-{
+public interface HasId {
     default boolean isNew() {
         return getId() == null;
     }

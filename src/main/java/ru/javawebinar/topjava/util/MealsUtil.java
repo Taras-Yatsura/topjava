@@ -12,14 +12,16 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
-public class MealsUtil
-{
+public class MealsUtil {
     private MealsUtil() {
     }
 
-    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime,
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals,
+                                              int caloriesPerDay,
+                                              LocalTime startTime,
                                               LocalTime endTime) {
-        return filterByPredicate(meals, caloriesPerDay,
+        return filterByPredicate(meals,
+                                 caloriesPerDay,
                                  meal -> Util.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
@@ -27,17 +29,18 @@ public class MealsUtil
         Map<LocalDate, Integer> caloriesSumByDate =
                 meals.stream().collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
 
-        return meals.stream().filter(filter)
-                    .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
-                    .collect(Collectors.toList());
+        return meals
+                .stream()
+                .filter(filter)
+                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
+                .collect(Collectors.toList());
     }
 
     public static MealTo createTo(Meal meal, boolean excess) {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
-    public static List<MealTo> getTos(Collection<Meal> meals, int dayCalories)
-    {
+    public static List<MealTo> getTos(Collection<Meal> meals, int dayCalories) {
         return filterByPredicate(meals, dayCalories, meal -> true);
     }
 

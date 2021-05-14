@@ -15,8 +15,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/profile")
-public class ProfileUIController extends AbstractUserController
-{
+public class ProfileUIController extends AbstractUserController {
 
     @GetMapping
     public String profile(ModelMap model, @AuthenticationPrincipal AuthorizedUser authUser) {
@@ -25,7 +24,9 @@ public class ProfileUIController extends AbstractUserController
     }
 
     @PostMapping
-    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status,
+    public String updateProfile(@Valid UserTo userTo,
+                                BindingResult result,
+                                SessionStatus status,
                                 @AuthenticationPrincipal AuthorizedUser authUser) {
         if (result.hasErrors()) {
             return "profile";

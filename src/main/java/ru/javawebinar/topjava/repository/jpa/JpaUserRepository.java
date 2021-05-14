@@ -13,8 +13,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class JpaUserRepository implements UserRepository
-{
+public class JpaUserRepository implements UserRepository {
 
 /*
     @Autowired
@@ -60,8 +59,11 @@ public class JpaUserRepository implements UserRepository
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email)
-                             .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false).getResultList();
+        List<User> users = em
+                .createNamedQuery(User.BY_EMAIL, User.class)
+                .setParameter(1, email)
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                .getResultList();
         return DataAccessUtils.singleResult(users);
     }
 

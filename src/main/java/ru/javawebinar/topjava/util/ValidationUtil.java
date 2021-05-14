@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.util.Set;
 
-public class ValidationUtil
-{
+public class ValidationUtil {
 
     private static final Validator validator;
 
@@ -44,8 +43,7 @@ public class ValidationUtil
         checkNotFound(found, "id=" + id);
     }
 
-    public static void checkNotFound(boolean found, String msg)
-    {
+    public static void checkNotFound(boolean found, String msg) {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
         }
@@ -72,18 +70,14 @@ public class ValidationUtil
         }
     }
 
-    //  https://stackoverflow.com/a/65442410/548473
-    @NonNull
-    public static Throwable getRootCause(@NonNull Throwable t) {
-        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
-        return rootCause != null ? rootCause : t;
-    }
-
     public static String getMessage(Throwable e) {
         return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
 
-    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace,
+    public static Throwable logAndGetRootCause(Logger log,
+                                               HttpServletRequest req,
+                                               Exception e,
+                                               boolean logStackTrace,
                                                ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);
         if (logStackTrace) {
@@ -93,5 +87,12 @@ public class ValidationUtil
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
         }
         return rootCause;
+    }
+
+    //  https://stackoverflow.com/a/65442410/548473
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }

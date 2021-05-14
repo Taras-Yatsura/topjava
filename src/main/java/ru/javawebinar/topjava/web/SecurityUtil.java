@@ -6,8 +6,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 
 import static java.util.Objects.requireNonNull;
 
-public class SecurityUtil
-{
+public class SecurityUtil {
     private SecurityUtil() {
     }
 
