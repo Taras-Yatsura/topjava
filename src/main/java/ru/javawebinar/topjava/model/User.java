@@ -7,6 +7,8 @@ import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.HasIdAndEmail;
+import ru.javawebinar.topjava.View;
+import ru.javawebinar.topjava.util.validation.NoHtml;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -42,9 +44,8 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     @Column(name = "email",
             nullable = false,
             unique = true)
-    @Email
-    @NotBlank
-    @Size(max = 100)
+    @Email @NotBlank @Size(max = 100)
+    @NoHtml(groups = {View.Web.class})  // https://stackoverflow.com/questions/17480809
     private String email;
 
     @Column(name = "password",

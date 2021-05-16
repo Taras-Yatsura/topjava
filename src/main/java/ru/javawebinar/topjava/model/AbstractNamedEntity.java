@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.model;
 
+import ru.javawebinar.topjava.View;
+import ru.javawebinar.topjava.util.validation.NoHtml;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +16,7 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
           max = 100)
     @Column(name = "name",
             nullable = false)
+    @NoHtml(groups = {View.Web.class})
     protected String name;
 
     protected AbstractNamedEntity() {
