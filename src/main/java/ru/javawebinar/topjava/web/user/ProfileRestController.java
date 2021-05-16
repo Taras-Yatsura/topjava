@@ -3,17 +3,15 @@ package ru.javawebinar.topjava.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.net.URI;
+
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(value = ProfileRestController.REST_URL,
@@ -22,14 +20,14 @@ public class ProfileRestController extends AbstractUserController {
     static final String REST_URL = "/rest/profile";
 
     @GetMapping
-    public User get(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
-        return super.get(authUser.getId());
+    public User get() {
+        return super.get(authUserId());
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
-        super.delete(authUser.getId());
+    public void delete() {
+        super.delete(authUserId());
     }
 
     @PostMapping(value = "/register",
@@ -43,10 +41,8 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo, @ApiIgnore @AuthenticationPrincipal AuthorizedUser authUser)
-            throws BindException {
-        validateBeforeUpdate(userTo, authUser.getId());
-        super.update(userTo, authUser.getId());
+    public void update(@Valid @RequestBody UserTo userTo) {
+        super.update(userTo, authUserId());
     }
 
     @GetMapping("/text")
@@ -55,7 +51,7 @@ public class ProfileRestController extends AbstractUserController {
     }
 
     @GetMapping("/with-meals")
-    public User getWithMeals(@AuthenticationPrincipal @ApiIgnore AuthorizedUser authUser) {
-        return super.getWithMeals(authUser.getId());
+    public User getWithMeals() {
+        return super.getWithMeals(authUserId());
     }
 }

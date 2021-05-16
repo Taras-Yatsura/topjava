@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.User;
@@ -56,13 +55,12 @@ public class AdminRestController extends AbstractUserController {
         super.enable(id, enabled);
     }
 
+    @Override
     @PutMapping(value = "/{id}",
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) throws BindException {
-        validateBeforeUpdate(user, id);
-        log.info("update {} with id={}", user, id);
-        service.update(user);
+    public void update(@Valid @RequestBody User user, @PathVariable int id) {
+        super.update(user, id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

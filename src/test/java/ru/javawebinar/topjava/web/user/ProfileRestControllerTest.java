@@ -74,7 +74,9 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                         .put(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(userHttpBasic(user))
-                        .content(JsonUtil.writeValue(updatedTo))).andDo(print()).andExpect(status().isNoContent());
+                        .content(jsonWithPassword(updatedTo, "newPass")))
+                .andDo(print())
+                .andExpect(status().isNoContent());
 
         USER_MATCHER.assertMatch(userService.get(USER_ID), UserUtil.updateFromTo(new User(user), updatedTo));
     }
