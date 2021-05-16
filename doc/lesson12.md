@@ -1,44 +1,37 @@
-# Онлайн-проекта <a href="https://github.com/JavaWebinar/topjava">TopJava</a>
-
-## [Патчи](https://drive.google.com/drive/u/1/folders/1ZsPX879m6x4Va0Wy3D1EQIBsnZUOOvao)
-
-### ![correction](https://cloud.githubusercontent.com/assets/13649199/13672935/ef09ec1e-e6e7-11e5-9f79-d1641c05cbe6.png) Правки в проекте
-
-#### Apply 12_0_fix_valid_update
-
-- Добавил `@Valid` на update. Тесты ломаются, тк. не вызывается `validateBeforeUpdate`
-
-#### Apply 12_1_workaround_unique_email_validation
-
-- Вернулся к автоматической валидации (убрал валидацию вручную в `validateBeforeUpdate`).
-- В `UniqueMailValidator.validate` сделал обходное решение с использованием заинжекченного `HttpServletRequest`
-
-#### Apply 12_2_XSS
-
-- Все классы валидации разместил в `ru.javawebinar.topjava.util.validation`
-- Сделал собственную аннотацию `@NoHtml` на основе [Sanitizing User Input](https://thoughtfulsoftware.wordpress.com/2013/05/26/sanitizing-user-input-part-ii-validation-with-spring-rest/)
-  и [jsoup - Sanitize HTML](https://www.tutorialspoint.com/jsoup/jsoup_sanitize_html.htm)
-
-## Spring Boot + Миграция
-
-### 1. Пройдите основы Spring Boot: [BootJava](https://javaops.ru/view/bootjava)
-
-### 2. Миграция REST части проекта `Calories Management` на Spring Boot
-
-Вычекайте в отдельную папку (как отдельный проект) ветку `spring-boot`:
-
-```
-git clone --branch spring-boot --single-branch https://github.com/JavaWebinar/topjava.git topjava_boot
-```  
-
-Если будете его менять, [настройте `git remote`](https://javaops.ru/view/bootjava/lesson01#project)
-
-- Проект сделал с минимальным количеством кода (как тестовое задание или ТЗ на выпускной проект): убрал слой сервисов, профили, группы, локализацию, весь UI.
-- База создается автогенераций по модели (для тестового задания и базы в памяти - лучший вариант).
-- При запросе сущности с неверным `id` вместо `NotFoundException` возвращаю `notFound()`, см. реализацию `ResponseEntity.of`
-- Сделал `BaseRepository` - сюда можно размещать [общие методы репозиториев](https://stackoverflow.com/questions/42781264/multiple-base-repositories-in-spring-data-jpa)
-- Вместо своих конверторов использую `@DateTimeFormat`
-- Мигрировал все тесты контроллеров. В тестовом проекте столько тестов **НЕ ТРЕБУЕТСЯ**, достаточно нескольких на основные юзкейсы.
-- [REST API documentation](http://localhost:8080/swagger-ui.html) сделал на основе [OpenAPI 3.0](https://javaops.ru/view/bootjava/lesson06#openapi). **Добавьте в выпускной проект - это будет большим
-  плюсом и избавит от необходимости писать документацию**. Не забудьте ссылку на нее в `readme.md`!
-- Кэширование желательно в выпускном. 7 раз подумайте, что будете кэшировать! **Максимально просто, самые частые запросы, которые редко изменяются**.
+<article class="markdown-body entry-content container-lg" itemprop="text"><h1><a id="user-content-онлайн-проекта-topjava" class="anchor" aria-hidden="true" href="#онлайн-проекта-topjava"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Онлайн-проекта <a href="https://github.com/JavaWebinar/topjava">TopJava</a></h1>
+<h2><a id="user-content-патчи" class="anchor" aria-hidden="true" href="#патчи"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><a href="https://drive.google.com/drive/u/1/folders/1ZsPX879m6x4Va0Wy3D1EQIBsnZUOOvao" rel="nofollow">Патчи</a></h2>
+<h3><a id="user-content--правки-в-проекте" class="anchor" aria-hidden="true" href="#-правки-в-проекте"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/13649199/13672935/ef09ec1e-e6e7-11e5-9f79-d1641c05cbe6.png"><img src="https://cloud.githubusercontent.com/assets/13649199/13672935/ef09ec1e-e6e7-11e5-9f79-d1641c05cbe6.png" alt="correction" style="max-width:100%;"></a> Правки в проекте</h3>
+<h4><a id="user-content-apply-12_0_fix_valid_update" class="anchor" aria-hidden="true" href="#apply-12_0_fix_valid_update"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Apply 12_0_fix_valid_update</h4>
+<ul>
+<li>Добавил <code>@Valid</code> на update. Тесты ломаются, тк. не вызывается <code>validateBeforeUpdate</code></li>
+</ul>
+<h4><a id="user-content-apply-12_1_workaround_unique_email_validation" class="anchor" aria-hidden="true" href="#apply-12_1_workaround_unique_email_validation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Apply 12_1_workaround_unique_email_validation</h4>
+<ul>
+<li>Вернулся к автоматической валидации (убрал валидацию вручную в <code>validateBeforeUpdate</code>).</li>
+<li>В <code>UniqueMailValidator.validate</code> сделал обходное решение с использованием заинжекченного <code>HttpServletRequest</code></li>
+</ul>
+<h4><a id="user-content-apply-12_2_xss" class="anchor" aria-hidden="true" href="#apply-12_2_xss"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Apply 12_2_XSS</h4>
+<ul>
+<li>Все классы валидации разместил в <code>ru.javawebinar.topjava.util.validation</code></li>
+<li>Сделал собственную аннотацию <code>@NoHtml</code> на основе <a href="https://thoughtfulsoftware.wordpress.com/2013/05/26/sanitizing-user-input-part-ii-validation-with-spring-rest/" rel="nofollow">Sanitizing User Input</a>
+и <a href="https://www.tutorialspoint.com/jsoup/jsoup_sanitize_html.htm" rel="nofollow">jsoup - Sanitize HTML</a></li>
+</ul>
+<h2><a id="user-content-spring-boot--миграция" class="anchor" aria-hidden="true" href="#spring-boot--миграция"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Spring Boot + Миграция</h2>
+<h3><a id="user-content-1-пройдите-основы-spring-boot-bootjava" class="anchor" aria-hidden="true" href="#1-пройдите-основы-spring-boot-bootjava"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>1. Пройдите основы Spring Boot: <a href="https://javaops.ru/view/bootjava" rel="nofollow">BootJava</a></h3>
+<h3><a id="user-content-2-миграция-rest-части-проекта-calories-management-на-spring-boot" class="anchor" aria-hidden="true" href="#2-миграция-rest-части-проекта-calories-management-на-spring-boot"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>2. Миграция REST части проекта <code>Calories Management</code> на Spring Boot</h3>
+<p>Вычекайте в отдельную папку (как отдельный проект) ветку <code>spring-boot</code>:</p>
+<pre><code>git clone --branch spring-boot --single-branch https://github.com/JavaWebinar/topjava.git topjava_boot
+</code></pre>
+<p>Если будете его менять, <a href="https://javaops.ru/view/bootjava/lesson01#project" rel="nofollow">настройте <code>git remote</code></a></p>
+<ul>
+<li>Проект сделал с минимальным количеством кода (как тестовое задание или ТЗ на выпускной проект): убрал слой сервисов, профили, группы, локализацию, весь UI.</li>
+<li>База создается автогенераций по модели (для тестового задания и базы в памяти - лучший вариант).</li>
+<li>При запросе сущности с неверным <code>id</code> вместо <code>NotFoundException</code> возвращаю <code>notFound()</code>, см. реализацию <code>ResponseEntity.of</code></li>
+<li>Сделал <code>BaseRepository</code> - сюда можно размещать <a href="https://stackoverflow.com/questions/42781264/multiple-base-repositories-in-spring-data-jpa" rel="nofollow">общие методы репозиториев</a></li>
+<li>Вместо своих конверторов использую <code>@DateTimeFormat</code></li>
+<li>Мигрировал все тесты контроллеров. В тестовом проекте столько тестов <strong>НЕ ТРЕБУЕТСЯ</strong>, достаточно нескольких на основные юзкейсы.</li>
+<li><a href="http://localhost:8080/swagger-ui.html" rel="nofollow">REST API documentation</a> сделал на основе <a href="https://javaops.ru/view/bootjava/lesson06#openapi" rel="nofollow">OpenAPI 3.0</a>. <strong>Добавьте в выпускной проект - это будет большим
+плюсом и избавит от необходимости писать документацию</strong>. Не забудьте ссылку на нее в <code>readme.md</code>!</li>
+<li>Кэширование желательно в выпускном. 7 раз подумайте, что будете кэшировать! <strong>Максимально просто, самые частые запросы, которые редко изменяются</strong>.</li>
+</ul>
+</article>
